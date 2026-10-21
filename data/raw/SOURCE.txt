@@ -1,0 +1,5 @@
+source: https://rijksictdashboard.nl/api/opendata/json (listed at https://data.overheid.nl/dataset/rijks-ict-dashboard)
+downloaded: 2026-10-20 22:54 UTC (2026-10-21 00:54 Amsterdam)
+licence: CC-0 1.0
+publisher: Ministerie van Binnenlandse Zaken en Koninkrijksrelaties
+bytes: 7513246
