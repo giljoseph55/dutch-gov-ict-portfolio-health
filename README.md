@@ -8,6 +8,18 @@ An outside-view health check of 516 large ICT projects run by Dutch central-gove
 
 **So what:** Across the 431 measurable projects, €11.7bn of first estimates has become €16.2bn: €4.5bn (+38.3%) more, of which one programme (ERTMS, rail signalling) accounts for €1.1bn. A quiet first year is no sign of health, so cost reviews need to run on a fixed cycle for a project's whole life, not only when it re-plans.
 
+![49.4% of 431 projects sit more than 25% above their first cost estimate; the median project is +24.4%](charts/01_cost_growth_distribution.png)
+
+*49.4% of 431 projects sit more than 25% above their first cost estimate; the median project is +24.4%.*
+
+![After month 12, about 46% of projects grow by more than another 25%, whether or not they re-planned in their first year](charts/03_growth_after_year_one.png)
+
+*After month 12, about 46% of projects grow by more than another 25%, whether or not they re-planned in their first year.*
+
+![154 of 429 projects are both more than 25% over budget and more than 12 months late; 158 are neither](charts/05_cost_vs_schedule.png)
+
+*154 of 429 projects are both more than 25% over budget and more than 12 months late; 158 are neither.*
+
 The one-page PMO status report built from these numbers is in [`docs/PMO_status_report.md`](docs/PMO_status_report.md).
 
 ---
