@@ -1,0 +1,40 @@
+Share of projects more than +25% above first estimate, with 95% Wilson interval (%)
+
+[ministry]
+  Algemene Zaken                                  0.0  n=  1  ( 0.0 - 79.3)
+  Asiel en Migratie                              50.0  n=  2  ( 9.5 - 90.5)
+  Binnenlandse Zaken en Koninkrijksrelaties      48.0  n= 50  (34.8 - 61.5)
+  Buitenlandse Zaken                             70.0  n= 10  (39.7 - 89.2)
+  Defensie                                       33.3  n= 24  (18.0 - 53.3)
+  Economische Zaken                              46.2  n= 26  (28.8 - 64.5)
+  Financiën                                      43.2  n= 74  (32.6 - 54.6)
+  Infrastructuur en Waterstaat                   48.1  n= 54  (35.4 - 61.1)
+  Justitie en Veiligheid                         51.7  n= 60  (39.3 - 63.8)
+  Landbouw, Visserij, Voedselzekerheid en Natuur  50.0  n=  6  (18.8 - 81.2)
+  Onderwijs, Cultuur en Wetenschap               54.2  n= 24  (35.1 - 72.1)
+  Sociale Zaken en Werkgelegenheid               61.3  n= 75  (50.0 - 71.5)
+  Volksgezondheid, Welzijn en Sport              26.3  n= 19  (11.8 - 48.8)
+  Volkshuisvesting en Ruimtelijke Ordening       83.3  n=  6  (43.6 - 97.0)
+
+[method_class]
+  Agile/DevOps                                   51.4  n=140  (43.2 - 59.6)
+  Mixed                                          48.4  n= 31  (32.0 - 65.2)
+  Standard product                               41.4  n= 29  (25.5 - 59.3)
+  Unknown / n.a.                                 47.3  n=201  (40.5 - 54.2)
+  Waterfall                                      63.3  n= 30  (45.5 - 78.1)
+
+[size_band]
+  EUR 1-5m                                       84.4  n= 64  (73.6 - 91.3)
+  EUR 100m+                                      38.5  n= 13  (17.7 - 64.5)
+  EUR 20-100m                                    35.5  n=124  (27.6 - 44.2)
+  EUR 5-20m                                      47.8  n=230  (41.5 - 54.3)
+
+[replans_y1_group]
+  0                                              45.9  n=355  (40.8 - 51.1)
+  1                                              63.1  n= 65  (50.9 - 73.8)
+  2+                                             81.8  n= 11  (52.3 - 94.9)
+
+[growth AFTER month 12 > +25%, by replans_y1_group]  (Q11)
+  0                                              46.0  n=315  (40.6 - 51.6)
+  1                                              46.7  n= 60  (34.6 - 59.1)
+  2+                                             45.5  n= 11  (21.3 - 72.0)

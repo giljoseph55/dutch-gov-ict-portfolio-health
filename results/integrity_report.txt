@@ -1,0 +1,23 @@
+RECONCILIATION  projects 516/516  reports 3109/3109  sum(est_total_m) db 115545.371 vs source 115545.371  OK
+
+     0  hard: sqlite integrity_check = ok
+     0  hard: foreign key violations
+     0  hard: project without any cost report
+     0  hard: negative cost total, or component below -0.05m
+     0  hard: estimate total <> sum of its parts (tolerance 0.06m)
+     0  hard: actual total <> sum of its parts (tolerance 0.06m)
+     0  hard: invalid ISO date (start, as-of, report, est. end)
+     0  hard: seq not contiguous 1..n per project
+     0  hard: report_date goes backwards with seq
+     0  hard: replan_reason on a non-Herijking report
+     1  info: reports with a component between -0.05m and 0 (rounding artefact, e.g. Praeventis 2024-06-25)
+    14  info: projects with no Initieel report
+     9  info: projects whose first Initieel report is not their first report (baseline comes later)
+     2  info: projects with more than one Initieel report
+   220  info: reports with est_total_m = 0
+     1  info: reports with missing est_end_date
+    30  info: first report dated before project start_date
+     1  info: reports dated after the download date (2026-10-20)
+     1  info: duplicate project names
+
+RESULT: ALL HARD CHECKS PASSED

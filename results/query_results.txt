@@ -1,0 +1,210 @@
+-- Q1: Which projects are in the analysis? (the funnel from 516 to the samples the percentages are based on)
+-- HOW TO EXPLAIN: "Not every project can be measured. Cancelled ones have no outcome, some have no initial plan on record, and tiny or zero baselines make percentages meaningless. Every later percentage says which sample it uses."
+step                                                        n
+--------------------------------------------------------  ---
+1 projects in the dataset                                 516
+2 with an initial-plan report                             502
+3 ...and not cancelled / not yet started                  476
+4 COST sample: ...and initial estimate >= EUR 1m          431
+5 SCHEDULE sample: ...both end dates, >= 90 days planned  472
+
+
+-- Q2: Headline cost drift - how many projects are above their first cost estimate, and by how much?
+-- HOW TO EXPLAIN: "For each project: (latest estimate - first estimate) / first estimate. Then count how many are above 0%, 10%, 25%. The total row adds up euros: sum of first estimates vs sum of latest estimates. The last two columns show how much one project (the biggest) drives the total."
+n_projects  n_above_0pct  pct_above_0  pct_above_10  pct_above_25  pct_below_0  median_growth_pct  first_estimates_m  latest_estimates_m  total_growth_m  total_growth_pct  largest_single_growth_m  growth_excl_largest_m
+----------  ------------  -----------  ------------  ------------  -----------  -----------------  -----------------  ------------------  --------------  ----------------  -----------------------  ---------------------
+431                  282         65.4          58.2          49.4         18.8               24.4             11,725              16,216           4,491              38.3                    1,123                  3,368
+
+
+-- Q3: Headline schedule drift - how many projects have a later estimated end date than their first estimate?
+-- HOW TO EXPLAIN: "slip = latest estimated end date minus first estimated end date, in days. Counted against 90 days (a quarter) and 365 days (a year). Only estimates exist, not realised end dates, so this is slip of the forecast. Many end dates are entered as 31 December (see Q10), so read slip at year/quarter precision: the median of exactly 365 days means 'about a year', not a measured day count."
+n_projects  pct_later_than_first  pct_slip_over_90d  pct_slip_over_365d  pct_earlier_than_first  median_slip_days  median_slip_pct_of_planned_duration
+----------  --------------------  -----------------  ------------------  ----------------------  ----------------  -----------------------------------
+472                         72.2               67.4                47.9                     7.8               365                                 37.1
+
+
+-- Q4: Top 10 at-risk projects: still running (in progress or under reorientation), RAG = Red, ranked by euro growth.
+-- HOW TO EXPLAIN: "At risk = still active AND Red (cost > +25% or end date > 12 months later than first estimate). Ranked by euros added to the estimate, because a PMO cares first where the money is. These are outside-view flags from public data, not a judgement on the teams."
+name                                                                                                              ministry       status  first_est_m  latest_est_m  growth_m  growth_pct  slip_days  replans_total  rag  status_date
+-------------------------------------------------------------------------------  -----------------------------------------  -----------  -----------  ------------  --------  ----------  ---------  -------------  ---  -----------
+European Rail Traffic Management System (ERTMS)                                               Infrastructuur en Waterstaat  In progress        2,400         3,523     1,123          47        730              0  Red   2025-12-31
+Programma iCAS                                                                                Infrastructuur en Waterstaat  In progress        152.6         355.3     202.7         133       2011              0  Red   2025-12-31
+Maritiem Operatiecentrum Kustwacht (MOC KW)                                                                       Defensie  In progress         11.2         195.4     184.2       1,642       1280              7  Red   2025-12-31
+Digitaal stelsel omgevingswet (DSO)                                               Volkshuisvesting en Ruimtelijke Ordening  In progress        104.1         238.2     134.1         129       3472              4  Red   2025-12-31
+CHARM                                                                                         Infrastructuur en Waterstaat  In progress         34.1         156.0     121.9         358       2922              6  Red   2025-12-31
+LUV VTS                                                                                       Infrastructuur en Waterstaat  In progress           13         116.0     103.0         792       3598              6  Red   2025-12-31
+Bekostigen vernieuwt! (voorheen Doorontwikkelen Applicatielandschap Bekostigen)           Onderwijs, Cultuur en Wetenschap  In progress         23.9         105.3      81.5         342       2556              3  Red   2025-12-31
+Moderniseren Examens                                                                      Onderwijs, Cultuur en Wetenschap  In progress         26.8          71.8      45.1         168       1827              1  Red   2025-12-31
+Generiek platform Document- en Archiefbeheer                                                                     Financiën  In progress          3.4          48.2      44.8       1,318       2404              1  Red   2025-12-31
+Federatief Berichten Stelsel (FBS)                                               Binnenlandse Zaken en Koninkrijksrelaties  In progress         30.5          75.1      44.6         146       2191              4  Red   2026-07-31
+
+
+-- Q5: Drift by group. One table per grouping dimension (the same statement is run for each value below).
+-- HOW TO EXPLAIN: "Same measures as Q2/Q3, cut by one property at a time. n_cost is the group size - read small groups (n under 15) as anecdotes, not rates. One property at a time ignores overlap: big projects are also the ones with more re-plans, so none of this separates cause from correlation. n_cost and n_sched are different populations: the schedule sample also holds projects with a first estimate under EUR 1m (band '<EUR 1m') or without usable cost data."
+[dim = ministry]
+bucket                                          n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+----------------------------------------------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+Algemene Zaken                                       1                       0                 0         0                        0        1               730                100
+Asiel en Migratie                                    2                   126.3                50      13.0                     77.3        2             404.5                 50
+Binnenlandse Zaken en Koninkrijksrelaties           50                    21.2                48     270.8                     23.5       54             184.5                 37
+Buitenlandse Zaken                                  10                    63.6                70      75.8                     84.7       10               438                 60
+Defensie                                            24                    13.2              33.3     276.8                     41.7       26             958.5               69.2
+Economische Zaken                                   26                    15.3              46.2     119.1                     26.9       27               214                 37
+Financiën                                           74                      18              43.2     645.3                     41.6       75               422               54.7
+Infrastructuur en Waterstaat                        54                    23.8              48.1   1,712.9                     45.4       85               365                 40
+Justitie en Veiligheid                              60                    31.2              51.7     375.0                     30.4       60             519.5               61.7
+Landbouw, Visserij, Voedselzekerheid en Natuur       6                    21.7                50      24.7                     22.3        7                 1               42.9
+Onderwijs, Cultuur en Wetenschap                    24                    27.9              54.2     343.5                       70       25               213                 48
+Sociale Zaken en Werkgelegenheid                    75                    34.5              61.3     431.1                     39.2       74             297.5               43.2
+Volksgezondheid, Welzijn en Sport                   19                       0              26.3      26.3                      2.9       19               275               36.8
+Volkshuisvesting en Ruimtelijke Ordening             6                      86              83.3     176.9                      103        7               485               57.1
+
+[dim = size_band]
+bucket       n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+-----------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+<EUR 1m           0                                                                                    43               121               30.2
+EUR 1-5m         64                    94.3              84.4     418.0                    178.5       63               584               66.7
+EUR 5-20m       230                    23.3              47.8   1,400.4                       58      229               365               46.7
+EUR 20-100m     124                       5              35.5   1,123.0                     24.1      124               365               45.2
+EUR 100m+        13                    13.3              38.5   1,549.9                     35.1       13               731               61.5
+
+[dim = replans_y1_group]
+bucket  n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+0          355                    18.9              45.9   3,996.6                     39.1      396               365               46.7
+1           65                    33.9              63.1     441.1                     32.7       66               409                 53
+2+          11                    63.7              81.8      53.5                     33.7       10               394                 60
+
+[dim = replans_total_group]
+bucket  n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+0          166                       0              27.7   1,636.6                     26.5      186              10.5               26.3
+1           95                    21.7              45.3     341.6                     20.1      112             350.5               43.8
+2-3        102                    43.3              65.7     714.2                       34      107               603               68.2
+4+          68                    97.6              83.8   1,798.7                    103.3       67             1,095               82.1
+
+[dim = method_class]
+bucket            n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+----------------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+Agile/DevOps         140                    27.9              51.4   1,157.2                     47.8      144               365               47.9
+Mixed                 31                    14.6              48.4     169.3                     18.9       34             182.5               41.2
+Standard product      29                    20.7              41.4      29.9                      6.4       31               275               45.2
+Unknown / n.a.       201                    21.7              47.3   1,279.7                     27.8      219               365               49.8
+Waterfall             30                    43.8              63.3   1,855.1                     55.6       44               365               45.5
+
+[dim = ict_activity]
+bucket                  n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+----------------------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+Doorontwikkeling            12                     9.1              41.7      47.1                     27.6       14               298               42.9
+Innovatie                   16                     2.1              37.5      36.8                      8.8       17                31               23.5
+Legacy                      27                       0              44.4     253.1                     48.5       29               121               24.1
+Nieuwe dienstverlening      16                    32.5              62.5     116.7                     29.7       18               650               61.1
+Not stated                 227                    24.6              49.3   1,529.8                     30.8      244             365.5                 50
+Onderhoud                   20                       0                25     188.7                     31.3       26                 0               23.1
+Vernieuwing                113                    28.9              55.8   2,319.1                     49.8      124               456               56.5
+
+[dim = start_cohort]
+bucket                 n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+---------------------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+start 2012 or earlier      76                    17.6              43.4     968.4                     37.4       80             440.5               52.5
+start 2013-2016           109                      42              56.9     846.9                     37.9      125               459                 60
+start 2017-2020            97                    41.2              59.8   2,251.7                     58.2      107               484               55.1
+start 2021 or later       149                     9.8              40.3     424.2                       14      160               150               31.3
+
+[dim = status]
+bucket               n_cost  median_cost_growth_pct  pct_cost_over_25  growth_m  growth_pct_of_first_est  n_sched  median_slip_days  pct_slip_over_365
+-------------------  ------  ----------------------  ----------------  --------  -----------------------  -------  ----------------  -----------------
+Cancelled                 0                                                                                     0                                     
+Completed               290                      27                51   1,758.2                     30.1      312               365               48.7
+In progress             136                    20.7              47.1   2,777.3                     48.3      155               365               46.5
+Not yet started           0                                                                                     0                                     
+Under reorientation       5                       0                20     -44.3                    -35.3        5               336                 40
+
+
+-- Q6: Do cost drift and schedule drift travel together?
+-- HOW TO EXPLAIN: "A 2x2: cost above +25% or not, end date more than 12 months later or not, for projects in both samples. If the diagonal cells dominate, they travel together."
+cost_band              schedule_band  n_projects
+------------  ----------------------  ----------
+cost <= +25%  end <= 12 months later         158
+cost <= +25%   end > 12 months later          59
+cost > +25%   end <= 12 months later          58
+cost > +25%    end > 12 months later         154
+
+
+-- Q7: RAG distribution (my thresholds: Red = cost > +25% or end > 12 months later; Amber = > +10% or > 3 months).
+-- HOW TO EXPLAIN: "A portfolio status split. The thresholds are a PMO-style convention I chose and state openly; change them in sql/views.sql and every number moves with them."
+status                 rag  n_projects
+-------------------  -----  ----------
+Completed              Red         192
+Completed            Amber          47
+Completed            Green          74
+In progress            Red          91
+In progress          Amber          18
+In progress          Green          47
+Under reorientation    Red           2
+Under reorientation  Amber           1
+Under reorientation  Green           2
+
+
+-- Q8: Why do projects re-plan? (reasons stated on re-plan reports; a report can list several)
+-- HOW TO EXPLAIN: "A re-plan is a formal reset of the plan. The dashboard lets the project state one or more reasons. This counts the stated reasons, so the shares add to more than 100%. The reasons are self-reported."
+reason                                         n_reports  pct_of_re_plans_with_a_reason
+---------------------------------------------  ---------  -----------------------------
+Setbacks within the project                          232                             40
+Change of (business) goals or requirements           173                           29.8
+Scope changes originating inside the project          99                           17.1
+Implementation in the organisation                    76                           13.1
+Adopting external advice                              41                            7.1
+Price development                                     36                            6.2
+Change in law                                         14                            2.4
+Wish of the House of Representatives / Senate          8                            1.4
+
+
+-- Q9: Completed projects - does the picture change if we use ACTUAL spend instead of the final ESTIMATE?
+-- HOW TO EXPLAIN: "For finished projects the dashboard also reports what was actually spent. Most finish within 5% of their last estimate, but some come in under it. Measuring against actual spend lowers the overrun shares a little; it does not change the direction. I report both so nobody can say I picked the worse number."
+n_completed  final_est_pct_above_0  final_est_pct_above_25  actual_spend_pct_above_0  actual_spend_pct_above_25  n_spent_over_5pct_under_final_est  n_spent_over_5pct_above_final_est  final_estimates_m  actual_spend_m
+-----------  ---------------------  ----------------------  ------------------------  -------------------------  ---------------------------------  ---------------------------------  -----------------  --------------
+290                           67.9                      51                      65.2                       46.9                                 42                                  3              7,606           7,325
+
+
+-- Q10: How precise are the end dates? (share entered as 31 December, i.e. at year level)
+-- HOW TO EXPLAIN: "Almost half of all estimated end dates in the data are 31 December. That means many projects plan at year level, so schedule slip moves in big steps. That is why I talk about 'more than 12 months late' rather than exact day counts."
+scope                                        n_dates  n_on_31_dec  pct_on_31_dec
+-------------------------------------------  -------  -----------  -------------
+all cost reports with an end date               3108         1400             45
+schedule sample: first and latest end dates      944          412           43.6
+
+
+-- Q11: Is a first-year re-plan an early warning? Cost growth AFTER the first 12 months, by number of first-year re-plans.
+-- HOW TO EXPLAIN: "A re-plan in year one already contains some cost growth, so comparing total growth would be circular. Here I take each project's estimate at the 12-month mark and measure only what happens after that. If projects that re-planned early keep growing faster afterwards, the early re-plan is a real warning sign. I repeat it inside size bands, because size could drive both."
+size_band    replans_y1_group    n  pct_later_growth_over_0  pct_later_growth_over_25
+-----------  ----------------  ---  -----------------------  ------------------------
+all sizes                   0  315                     68.9                        46
+all sizes                   1   60                     63.3                      46.7
+all sizes                  2+   11                     81.8                      45.5
+EUR 1-5m                    0   50                       92                        84
+EUR 1-5m                    1    7                     85.7                      57.1
+EUR 1-5m                   2+    3                     66.7                      33.3
+EUR 5-20m                   0  158                     68.4                      42.4
+EUR 5-20m                   1   35                     71.4                      51.4
+EUR 5-20m                  2+    6                      100                        50
+EUR 20-100m                 0   96                     57.3                      32.3
+EUR 20-100m                 1   17                     41.2                      35.3
+EUR 20-100m                2+    2                       50                        50
+EUR 100m+                   0   11                     72.7                      45.5
+EUR 100m+                   1    1                        0                         0
+
+
+-- Q12: At-risk totals (the numbers behind the PMO report's top risks).
+-- HOW TO EXPLAIN: "All running Red projects, then the ten largest by euros added, and how many of those ten slipped five years or more."
+n_running_red_in_cost_sample  growth_all_running_red_m  growth_top10_m  top10_slipped_5y_or_more  top10_pct_of_portfolio_growth
+----------------------------  ------------------------  --------------  ------------------------  -----------------------------
+84                                               2,760         2,084.8                         8                           46.4
+
+
+-- Q13: Time coverage of the cost sample (behind the README limitations). Data end = the download date, 2026-10-20.
+-- HOW TO EXPLAIN: "The first estimates go back two decades, so the euros mix price levels. Projects whose first plan is less than a year before the download can't have a full first year yet, so their first-year re-plans are undercounted. A few reports carry dates after the download - a data-entry quirk."
+earliest_first_estimate  latest_first_estimate  n_first_plan_under_12m_before_download  n_reports_dated_after_download
+-----------------------  ---------------------  --------------------------------------  ------------------------------
+2001-01-01                          2026-09-24                                      14                               1
+
