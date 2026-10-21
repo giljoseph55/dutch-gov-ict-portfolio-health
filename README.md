@@ -3,7 +3,9 @@
 An outside-view health check of 516 large ICT projects run by Dutch central-government ministries, built from the government's own open data. It reads the portfolio the way a PMO (project management office) would: how far projects drift from their first plan, where the money goes, and which signals show up early enough to act on.
 
 **Question:** How far do Dutch central-government ICT projects drift from their first cost and end-date estimates, and which signals visible early separate the big drifters from the rest?
+
 **Finding:** 49.4% of 431 projects now sit more than 25% above their first cost estimate, and 47.9% of 472 expect to finish more than a year later than first planned. The drift keeps coming after year one: from the 12-month mark, about 46% still grow by more than 25%, whether or not they re-planned early.
+
 **So what:** Across the 431 measurable projects, €11.7bn of first estimates has become €16.2bn: €4.5bn (+38.3%) more, of which one programme (ERTMS, rail signalling) accounts for €1.1bn. A quiet first year is no sign of health, so cost reviews need to run on a fixed cycle for a project's whole life, not only when it re-plans.
 
 The one-page PMO status report built from these numbers is in [`docs/PMO_status_report.md`](docs/PMO_status_report.md).
